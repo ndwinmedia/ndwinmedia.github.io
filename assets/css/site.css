@@ -1,0 +1,853 @@
+/* ==========================================================================
+   Theme tokens
+   ========================================================================== */
+
+:root {
+  --bg:            #1a1f26;
+  --bg-elevated:   #212832;
+  --bg-sunken:     #151920;
+  --line:          #2c343f;
+  --line-strong:   #3a4552;
+
+  --text:          #e9edf2;
+  --text-muted:    #9aa5b3;
+  --text-faint:    #6d7987;
+
+  --accent:        #c9a15b;
+  --accent-soft:   rgba(201, 161, 91, 0.16);
+
+  --font-display:  "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-body:     "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+                   Helvetica, Arial, sans-serif;
+
+  --page-max:      1240px;
+  --gutter:        clamp(1.25rem, 4vw, 3rem);
+
+  --radius:        4px;
+  --transition:    220ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img { display: block; max-width: 100%; }
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.15;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.shell {
+  width: 100%;
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 200;
+  padding: 0.75rem 1.25rem;
+  background: var(--accent);
+  color: #14181e;
+  font-weight: 600;
+}
+.skip-link:focus { left: 0; }
+
+/* ==========================================================================
+   Header / navigation
+   ========================================================================== */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(26, 31, 38, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  min-height: 68px;
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 2.4rem);
+}
+
+.nav a {
+  position: relative;
+  padding: 0.4rem 0;
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: color var(--transition);
+}
+
+.nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--transition);
+}
+
+.nav a:hover { color: var(--text); }
+.nav a:hover::after { transform: scaleX(1); }
+
+.nav a[aria-current="page"] { color: var(--text); }
+.nav a[aria-current="page"]::after { transform: scaleX(1); }
+
+.nav-toggle {
+  display: none;
+  background: none;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  color: var(--text);
+  padding: 0.5rem 0.7rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+@media (max-width: 720px) {
+  .nav-toggle { display: block; }
+
+  .nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 0.5rem var(--gutter) 1.25rem;
+    background: var(--bg-elevated);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav[hidden] { display: none; }
+
+  .nav a {
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .nav a::after { display: none; }
+  .nav a[aria-current="page"] { color: var(--accent); }
+}
+
+/* ==========================================================================
+   Banner
+   ========================================================================== */
+
+.banner {
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-sunken);
+}
+
+.banner__image {
+  width: 100%;
+  height: clamp(320px, 52vh, 560px);
+  object-fit: cover;
+  object-position: center;
+}
+
+.banner__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(26, 31, 38, 0.15) 0%,
+    rgba(26, 31, 38, 0.55) 55%,
+    rgba(26, 31, 38, 0.96) 100%
+  );
+}
+
+.banner__caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: clamp(1.75rem, 5vh, 3.25rem);
+  text-align: center;
+}
+
+.banner__name {
+  font-size: clamp(2.6rem, 8vw, 5rem);
+  letter-spacing: 0.02em;
+}
+
+.banner__tagline {
+  margin: 0.75rem 0 0;
+  font-size: 0.8rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.banner__subtitle {
+  margin: 0.6rem 0 0;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   Page headers (interior pages)
+   ========================================================================== */
+
+.page-head {
+  padding: clamp(3.5rem, 9vw, 6rem) 0 clamp(1.5rem, 4vw, 2.5rem);
+  border-bottom: 1px solid var(--line);
+}
+
+.page-head__eyebrow {
+  margin: 0 0 0.85rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.page-head h1 { font-size: clamp(2.2rem, 5.5vw, 3.4rem); }
+
+.page-head p {
+  max-width: 60ch;
+  margin: 1.1rem 0 0;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   Gallery — year / album / photos
+   ========================================================================== */
+
+/* padding-block, never the `padding` shorthand — these sit on the same element
+   as .shell and the shorthand would wipe out its side gutters. */
+.gallery { padding-block: clamp(3rem, 7vw, 5rem) 2rem; }
+
+.year {
+  padding-block: clamp(2rem, 5vw, 3.25rem);
+  border-top: 1px solid var(--line);
+}
+.year:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.year__label {
+  display: flex;
+  align-items: baseline;
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.year__number {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 7vw, 4.25rem);
+  line-height: 1;
+  color: var(--text);
+}
+
+.year__rule {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--line-strong), transparent);
+}
+
+.year__count {
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+
+.album + .album { margin-top: clamp(3rem, 6vw, 4.5rem); }
+
+.album__header { max-width: 62ch; margin-bottom: 1.6rem; }
+
+.album__title {
+  font-size: clamp(1.5rem, 3.2vw, 2.05rem);
+  margin-bottom: 0.5rem;
+}
+
+.album__description {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.98rem;
+}
+
+/* Albums pick a layout in content/gallery.js. Default is masonry columns,
+   which keep mixed portrait/landscape shots tidy. --columns is set per album
+   in JS so a two-photo album doesn't leave an empty trailing column. */
+.album__grid--masonry {
+  --columns: 3;
+  column-count: var(--columns);
+  column-gap: 14px;
+}
+
+@media (max-width: 900px) { .album__grid--masonry { column-count: min(var(--columns), 2); } }
+@media (max-width: 560px) { .album__grid--masonry { column-count: 1; } }
+
+/* --- layout: "justified" -------------------------------------------------
+   Every photo in a row is shown at the SAME height, with widths following
+   each photo's own proportions, so nothing is stretched or cropped. Each
+   item grows in proportion to its aspect ratio (--ar, measured from the
+   file by JS) while its box keeps that same ratio — equal heights fall out
+   of the arithmetic. The fallback value is a typical portrait shape, so the
+   layout barely moves once the real ratios arrive. */
+.album__grid--justified {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.album__row {
+  display: flex;
+  gap: 14px;
+}
+
+.album__grid--justified .photo {
+  flex: var(--ar, 0.72) 1 0;
+  aspect-ratio: var(--ar, 0.72);
+  margin: 0;
+  min-width: 0;
+}
+
+.album__grid--justified .photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* box matches the photo's ratio, so nothing is cut off */
+}
+
+/* --- layout: "plus" ------------------------------------------------------
+   Three across, with the outer two dropped down and a fourth photo centred
+   underneath, so the group reads as a plus sign. */
+.album__grid--plus {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.album__grid--plus .photo { margin: 0; }
+
+.album__grid--plus .photo:nth-child(1),
+.album__grid--plus .photo:nth-child(3) {
+  margin-top: clamp(2rem, 6vw, 5.5rem);
+}
+
+/* Centre the fourth photo to close the shape. */
+.album__grid--plus .photo:nth-child(4) {
+  grid-column: 2;
+  margin-top: clamp(-6rem, -8vw, -2rem);
+}
+
+@media (max-width: 720px) {
+  .album__grid--plus {
+    grid-template-columns: 1fr;
+  }
+  .album__grid--plus .photo:nth-child(1),
+  .album__grid--plus .photo:nth-child(3),
+  .album__grid--plus .photo:nth-child(4) {
+    grid-column: auto;
+    margin-top: 0;
+  }
+}
+
+/* Below 560px the layout code gives every photo its own row, so nothing
+   further is needed here. */
+
+.photo {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin: 0 0 14px;
+  border: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--bg-elevated);
+  break-inside: avoid;
+  cursor: zoom-in;
+  position: relative;
+  transition: transform var(--transition);
+}
+
+.photo img {
+  width: 100%;
+  height: auto;
+  transition: opacity 400ms ease, transform var(--transition);
+  opacity: 0;
+}
+
+.photo img.is-loaded { opacity: 1; }
+
+.photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius);
+  pointer-events: none;
+  transition: box-shadow var(--transition);
+}
+
+.photo:hover img { transform: scale(1.03); }
+.photo:hover::after { box-shadow: inset 0 0 0 1px var(--accent); }
+
+/* ==========================================================================
+   Lightbox
+   ========================================================================== */
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 4vw, 3rem);
+  background: rgba(14, 17, 21, 0.95);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease;
+}
+
+.lightbox.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.lightbox__figure {
+  margin: 0;
+  max-width: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.lightbox__image {
+  max-width: 100%;
+  max-height: 82vh;
+  width: auto;
+  object-fit: contain;
+  border-radius: var(--radius);
+}
+
+.lightbox__caption {
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.lightbox__btn {
+  position: absolute;
+  background: rgba(33, 40, 50, 0.85);
+  border: 1px solid var(--line-strong);
+  color: var(--text);
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background var(--transition), border-color var(--transition);
+}
+
+.lightbox__btn:hover {
+  background: var(--bg-elevated);
+  border-color: var(--accent);
+}
+
+.lightbox__btn--close { top: 1.25rem; right: 1.25rem; }
+.lightbox__btn--prev  { left: clamp(0.75rem, 3vw, 2rem); }
+.lightbox__btn--next  { right: clamp(0.75rem, 3vw, 2rem); }
+
+/* ==========================================================================
+   Generic content sections (About / Contact / Video)
+   ========================================================================== */
+
+.section { padding-block: clamp(3rem, 7vw, 5rem); }
+
+.prose {
+  max-width: 64ch;
+  font-size: 1.05rem;
+  color: var(--text-muted);
+}
+.prose p { margin: 0 0 1.35rem; }
+.prose p:last-child { margin-bottom: 0; }
+.prose strong { color: var(--text); font-weight: 600; }
+
+/* Portrait sits above the words, both centred in one column. */
+.about-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  gap: clamp(2rem, 4vw, 2.75rem);
+  align-items: start;
+  text-align: center;
+}
+
+.about-layout .prose {
+  font-size: clamp(1.15rem, 0.95rem + 0.7vw, 1.45rem);
+  line-height: 1.6;
+  max-width: 46ch;
+  color: var(--text);
+}
+
+.about-layout .prose p { margin-bottom: 1.5rem; }
+
+.portrait {
+  width: 100%;
+  max-width: 460px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+}
+
+/* --- Contact form ------------------------------------------------------- */
+
+.contact-form {
+  max-width: 520px;
+  margin-top: 2.5rem;
+}
+
+.field { margin: 0 0 1.5rem; }
+
+.field label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  padding: 0.8rem 0.95rem;
+  background: var(--bg-sunken);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.98rem;
+  line-height: 1.55;
+  transition: border-color var(--transition), background var(--transition);
+}
+
+.field textarea { resize: vertical; min-height: 8rem; }
+
+.field input::placeholder,
+.field textarea::placeholder { color: var(--text-faint); }
+
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--bg-elevated);
+}
+
+.button {
+  padding: 0.8rem 1.9rem;
+  background: transparent;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  color: var(--accent);
+  font-family: inherit;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+}
+
+.button:hover:not(:disabled) {
+  background: var(--accent);
+  color: #14181e;
+}
+
+.button:disabled { opacity: 0.5; cursor: default; }
+
+.form-status {
+  margin: 1rem 0 0;
+  min-height: 1.4em;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.form-status.is-ok { color: var(--accent); }
+.form-status.is-error { color: #e0796b; }
+
+.contact-direct {
+  margin: 2.25rem 0 0;
+  font-size: 0.9rem;
+  color: var(--text-faint);
+}
+
+.contact-direct a { color: var(--accent); }
+.contact-direct a:hover { opacity: 0.75; }
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  /* Stops a single film from ballooning to the full page width. */
+  max-width: 980px;
+}
+
+/* Reels are vertical, so they want narrower columns than a 16:9 film. */
+.video-grid--reels {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+  gap: clamp(1.25rem, 2.5vw, 2rem);
+  max-width: none;
+}
+
+.video-group__heading {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  margin-bottom: 1.75rem;
+}
+
+.video-group__heading:not(:first-child) { margin-top: clamp(3rem, 6vw, 4.5rem); }
+
+.video-card__frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--bg-sunken);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.video-card__frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.video-card__title { font-size: 1.3rem; margin: 1rem 0 0.35rem; }
+.video-card__description { margin: 0; color: var(--text-muted); font-size: 0.95rem; }
+
+.video-card--reel .video-card__title { font-size: 1.15rem; }
+
+.video-card__note {
+  margin: 0.5rem 0 0;
+  font-size: 0.78rem;
+  color: var(--text-faint);
+}
+
+/* --- Instagram reel card ------------------------------------------------ */
+
+.reel-link {
+  position: relative;
+  display: block;
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--bg-sunken);
+  border: 1px solid var(--line);
+  transition: border-color var(--transition), transform var(--transition);
+}
+
+.reel-link__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition), filter var(--transition);
+}
+
+.reel-link.is-missing-thumbnail {
+  background:
+    radial-gradient(circle at 50% 38%, #2b3542 0%, var(--bg-sunken) 70%);
+}
+
+.reel-link__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(21, 25, 32, 0) 45%,
+    rgba(21, 25, 32, 0.85) 100%
+  );
+  opacity: 0.9;
+  transition: opacity var(--transition);
+}
+
+.play-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(21, 25, 32, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  color: #fff;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  transition: background var(--transition), border-color var(--transition),
+              transform var(--transition);
+}
+
+.play-badge svg { margin-left: 2px; }
+
+.reel-link__cta {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.9rem;
+  text-align: center;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity var(--transition), transform var(--transition);
+}
+
+.reel-link:hover,
+.reel-link:focus-visible { border-color: var(--accent); }
+
+.reel-link:hover .reel-link__image,
+.reel-link:focus-visible .reel-link__image { transform: scale(1.04); }
+
+.reel-link:hover .play-badge,
+.reel-link:focus-visible .play-badge {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #14181e;
+  transform: translate(-50%, -50%) scale(1.06);
+}
+
+.reel-link:hover .reel-link__cta,
+.reel-link:focus-visible .reel-link__cta {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.empty-state {
+  padding: clamp(3rem, 8vw, 5rem) 1.5rem;
+  text-align: center;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+}
+
+.empty-state h2 {
+  font-size: 1.6rem;
+  color: var(--text);
+  margin-bottom: 0.6rem;
+}
+
+.empty-state p { margin: 0; max-width: 44ch; margin-inline: auto; }
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.site-footer {
+  margin-top: clamp(3rem, 8vw, 6rem);
+  border-top: 1px solid var(--line);
+  padding-block: 2.25rem;
+}
+
+.site-footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.8rem;
+  color: var(--text-faint);
+}
+
+.site-footer a { color: var(--text-muted); transition: color var(--transition); }
+.site-footer a:hover { color: var(--accent); }
+
+/* ==========================================================================
+   Motion preferences
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  .photo:hover img { transform: none; }
+}

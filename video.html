@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Video</title>
+  <meta name="description" content="Short films and motion work.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="shell site-header__inner">
+      <a class="brand" href="index.html" data-site-name>Portfolio</a>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle menu">☰</button>
+
+      <nav class="nav" id="primary-nav" aria-label="Primary">
+        <a href="index.html">Photography</a>
+        <a href="video.html">Video</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="shell">
+      <div class="page-head">
+        <p class="page-head__eyebrow">Motion</p>
+        <h1>Video</h1>
+        <p>Longer-form pieces and short cuts — the moments a single frame couldn't hold.</p>
+      </div>
+    </div>
+
+    <div class="shell section" data-videos></div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell site-footer__inner">
+      <span>© <span data-current-year></span> <span data-site-name></span></span>
+      <a href="contact.html">Get in touch</a>
+    </div>
+  </footer>
+
+  <script src="content/site.js"></script>
+  <script src="content/videos.js"></script>
+  <script src="assets/js/site.js"></script>
+</body>
+</html>
