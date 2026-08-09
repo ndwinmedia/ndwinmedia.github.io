@@ -18,7 +18,7 @@ window.SITE_GALLERY = [
     albums: [
       {
         title: "Albany Adventures",
-        description: "A weekend upstate between rotations — long light, cold air, and the kind of quiet that only shows up when you finally stop moving.",
+        description: "A weekend between rotations — long light, cold air, and the kind of quiet that only shows up when you finally stop moving.",
         layout: "justified",
         photos: [
           "images/2024/Albany Adventures/IMG_01.png",
@@ -71,9 +71,6 @@ window.SITE_GALLERY = [
           "images/2021/A Walk Through Oregon/IMG_01.png",
           "images/2021/A Walk Through Oregon/IMG_02.png",
           "images/2021/A Walk Through Oregon/IMG_03.png",
-          "images/2021/A Walk Through Oregon/IMG_04.png",
-          "images/2021/A Walk Through Oregon/IMG_05.png",
-          "images/2021/A Walk Through Oregon/IMG_06.png"
         ]
       },
       {
@@ -84,9 +81,36 @@ window.SITE_GALLERY = [
           "images/2021/Oregon Shenanigans/IMG_01.png",
           "images/2021/Oregon Shenanigans/IMG_02.png",
           "images/2021/Oregon Shenanigans/IMG_03.png",
-          "images/2021/Oregon Shenanigans/IMG_04.png"
         ]
-      }
+      },
+      {
+        title: "My Favorite Memories",
+        layout: "carousel",
+        photos: [
+          "images/My Favorite Memories/IMG_04.png",
+          "images/My Favorite Memories/IMG_05.png",
+          "images/My Favorite Memories/IMG_06.png",
+          "images/My Favorite Memories/IMG_07.png",
+          "images/My Favorite Memories/IMG_1227.jpeg",
+          "images/My Favorite Memories/IMG_1228.jpeg",
+          "images/My Favorite Memories/IMG_1229.jpeg",
+          "images/My Favorite Memories/IMG_1230.jpeg",
+          "images/My Favorite Memories/IMG_1231.jpeg",
+          "images/My Favorite Memories/IMG_1232.jpeg"
+        ],
+        captions: [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      },
     ]
   }
 ];

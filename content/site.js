@@ -11,7 +11,7 @@ window.SITE = {
   // Shown under the name on the home page banner.
   tagline: "Photography",
   // Small line of context under the tagline. Keep it short.
-  subtitle: "A storyteller at heart",
+  subtitle: "A storyteller at heart that captures moments you can feel over and over again",
 
   /* --- Home page banner -------------------------------------------------- */
   banner: "images/banner/image.png",

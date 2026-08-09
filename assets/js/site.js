@@ -238,16 +238,31 @@
 
   function buildAlbum(album) {
     var section = el("section", "album");
+    var layout = album.layout || "masonry";
 
-    var header = el("div", "album__header");
-    header.appendChild(el("h3", "album__title", album.title || "Untitled"));
-    if (album.description) {
-      header.appendChild(el("p", "album__description", album.description));
+    // Carousels put the description inside the slides themselves (bottom
+    // caption), so the usual header above the grid would repeat it. The
+    // title instead becomes a divider above the carousel, matching the
+    // year dividers ("My Favorite Memories ----- 4 photos").
+    if (layout !== "carousel") {
+      var header = el("div", "album__header");
+      header.appendChild(el("h3", "album__title", album.title || "Untitled"));
+      if (album.description) {
+        header.appendChild(el("p", "album__description", album.description));
+      }
+      section.appendChild(header);
     }
-    section.appendChild(header);
+
+    if (layout === "carousel") {
+      if (album.title) {
+        var photoCount = (album.photos || []).length;
+        section.appendChild(buildSectionLabel(album.title, photoCount, true));
+      }
+      section.appendChild(buildCarousel(album));
+      return section;
+    }
 
     var photos = album.photos || [];
-    var layout = album.layout || "masonry";
 
     var grid = el("div", "album__grid album__grid--" + layout);
 
@@ -278,6 +293,158 @@
     return section;
   }
 
+  /* --------------------------------------------------------------- carousel */
+
+  // Auto-advancing slideshow used by layout: "carousel" albums. Each slide
+  // shows the full photo (never cropped, so portrait and landscape both look
+  // right) centred over a blurred, zoomed copy of the same image that fills
+  // the frame behind it. The caption sits over a bottom scrim so it stays
+  // readable regardless of what's behind it.
+  var CAROUSEL_INTERVAL = 5000;
+
+  function buildCarousel(album) {
+    var photos = album.photos || [];
+    // Optional: one caption per photo. Use "" for a photo with no caption.
+    var captions = album.captions || null;
+    var wrap = el("div", "carousel");
+    wrap.setAttribute("role", "region");
+    wrap.setAttribute("aria-roledescription", "carousel");
+    wrap.setAttribute("aria-label", album.title || "Photo carousel");
+
+    var track = el("div", "carousel__track");
+
+    var position = lightboxItems.length;
+    var slides = photos.map(function (photo, i) {
+      var slideCaption = captions ? (captions[i] || "") : (album.title || "");
+      var slide = el("div", "carousel__slide");
+      slide.setAttribute("aria-hidden", i === 0 ? "false" : "true");
+
+      var backdrop = el("div", "carousel__backdrop");
+      backdrop.style.backgroundImage = "url(\"" + encodePath(photo) + "\")";
+      slide.appendChild(backdrop);
+
+      var button = el("button", "carousel__photo");
+      button.type = "button";
+      button.setAttribute("aria-label", "Open photo " + (i + 1) + " from " + (album.title || "carousel"));
+
+      var img = el("img", "carousel__image");
+      img.src = encodePath(photo);
+      img.alt = slideCaption || (album.title || "Untitled") + " — photo " + (i + 1);
+      img.loading = i === 0 ? "eager" : "lazy";
+      img.decoding = "async";
+      button.appendChild(img);
+      slide.appendChild(button);
+
+      var slidePosition = position + i;
+      lightboxItems.push({ src: img.src, caption: slideCaption || album.title || "Untitled" });
+      button.addEventListener("click", function () { openLightbox(slidePosition); });
+
+      track.appendChild(slide);
+      return slide;
+    });
+
+    wrap.appendChild(track);
+
+    var captionTitle = null;
+    var firstCaption = captions ? (captions[0] || "") : (album.title || "");
+    var caption = null;
+    if (captions || album.title || album.description) {
+      caption = el("div", "carousel__caption");
+      captionTitle = el("p", "carousel__caption-title", firstCaption);
+      if (!firstCaption) captionTitle.style.display = "none";
+      caption.appendChild(captionTitle);
+      if (album.description) caption.appendChild(el("p", "carousel__caption-text", album.description));
+      wrap.appendChild(caption);
+    }
+
+    if (slides.length < 2) return wrap;
+
+    var dots = el("div", "carousel__dots");
+    var dotButtons = slides.map(function (_, i) {
+      var dot = el("button", "carousel__dot" + (i === 0 ? " is-active" : ""));
+      dot.type = "button";
+      dot.setAttribute("aria-label", "Go to photo " + (i + 1));
+      dot.addEventListener("click", function () {
+        goTo(i);
+        restart();
+      });
+      dots.appendChild(dot);
+      return dot;
+    });
+    (caption || wrap).appendChild(dots);
+
+    function prevHandler() { goTo(current - 1); restart(); }
+    function nextHandler() { goTo(current + 1); restart(); }
+
+    var prevBtn = el("button", "carousel__nav carousel__nav--prev", "‹");
+    prevBtn.type = "button";
+    prevBtn.setAttribute("aria-label", "Previous photo");
+    prevBtn.addEventListener("click", prevHandler);
+    wrap.appendChild(prevBtn);
+
+    var nextBtn = el("button", "carousel__nav carousel__nav--next", "›");
+    nextBtn.type = "button";
+    nextBtn.setAttribute("aria-label", "Next photo");
+    nextBtn.addEventListener("click", nextHandler);
+    wrap.appendChild(nextBtn);
+
+    var current = 0;
+    var timer = null;
+
+    function goTo(index) {
+      var next = (index + slides.length) % slides.length;
+      slides[current].classList.remove("is-active");
+      slides[current].setAttribute("aria-hidden", "true");
+      dotButtons[current].classList.remove("is-active");
+      current = next;
+      slides[current].classList.add("is-active");
+      slides[current].setAttribute("aria-hidden", "false");
+      dotButtons[current].classList.add("is-active");
+      track.style.transform = "translateX(-" + current * 100 + "%)";
+      if (captions && captionTitle) {
+        var text = captions[current] || "";
+        captionTitle.textContent = text;
+        captionTitle.style.display = text ? "" : "none";
+      }
+    }
+
+    function tick() { goTo(current + 1); }
+
+    function play() {
+      stop();
+      timer = setInterval(tick, CAROUSEL_INTERVAL);
+    }
+    function stop() {
+      if (timer) clearInterval(timer);
+      timer = null;
+    }
+    function restart() { play(); }
+
+    wrap.addEventListener("mouseenter", stop);
+    wrap.addEventListener("mouseleave", play);
+    wrap.addEventListener("focusin", stop);
+    wrap.addEventListener("focusout", function (event) {
+      if (!wrap.contains(event.relatedTarget)) play();
+    });
+
+    slides[0].classList.add("is-active");
+    play();
+
+    return wrap;
+  }
+
+  // Shared "TEXT ----- N photos" divider, used both for a year heading and
+  // for a titled carousel sitting above its own slideshow. `wordy` shrinks
+  // the heading for text titles, which would otherwise render at the huge
+  // display size meant for a four-digit year.
+  function buildSectionLabel(text, photoCount, wordy) {
+    var label = el("div", "year__label" + (wordy ? " year__label--wordy" : ""));
+    label.appendChild(el("h2", "year__number", text));
+    label.appendChild(el("span", "year__rule"));
+    label.appendChild(el("span", "year__count", plural(photoCount, "photo")));
+    return label;
+  }
+
   function buildYear(entry) {
     var section = el("section", "year");
 
@@ -286,11 +453,7 @@
       return sum + (album.photos ? album.photos.length : 0);
     }, 0);
 
-    var label = el("div", "year__label");
-    label.appendChild(el("h2", "year__number", String(entry.year)));
-    label.appendChild(el("span", "year__rule"));
-    label.appendChild(el("span", "year__count", plural(photoCount, "photo")));
-    section.appendChild(label);
+    section.appendChild(buildSectionLabel(String(entry.year), photoCount));
 
     albums.forEach(function (album) {
       section.appendChild(buildAlbum(album));
