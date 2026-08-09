@@ -13,7 +13,7 @@ window.SITE_PHOTO_SIZES = {
   "images/2024/Albany Adventures/IMG_01.png": [1920, 1280],
   "images/2024/Albany Adventures/IMG_02.png": [1920, 1281],
   "images/2023/Diploma & Drip/IMG_01.jpg": [1443, 1925],
-  "images/2023/Diploma & Drip/IMG_02.jpg": [1278, 1925],
+  "images/2023/Diploma & Drip/IMG_02.png": [1023, 1538],
   "images/2022/A’s Christmas Pawrty/IMG_01.jpg": [1283, 1925],
   "images/2022/A’s Christmas Pawrty/IMG_02.jpg": [1283, 1925],
   "images/2022/A’s Christmas Pawrty/IMG_03.jpg": [2889, 1925],

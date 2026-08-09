@@ -37,7 +37,7 @@ window.SITE_GALLERY = [
         layout: "justified",
         photos: [
           "images/2023/Diploma & Drip/IMG_01.jpg",
-          "images/2023/Diploma & Drip/IMG_02.jpg"
+          "images/2023/Diploma & Drip/IMG_02.png"
         ]
       }
     ]

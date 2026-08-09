@@ -79,10 +79,22 @@ function directories(dir) {
     .map((entry) => entry.name);
 }
 
+/* Keep a photo in the folder but off the site by putting IGNORE anywhere in
+   its filename, or by starting the name with an underscore. Handy for holding
+   on to an older edit of a shot without publishing it. */
+function isIgnored(name) {
+  return name.startsWith("_") || /ignore/i.test(name);
+}
+
 function imagesIn(dir) {
   return fs
     .readdirSync(dir, { withFileTypes: true })
-    .filter((entry) => entry.isFile() && IMAGE_EXTENSIONS.has(path.extname(entry.name).toLowerCase()))
+    .filter(
+      (entry) =>
+        entry.isFile() &&
+        !isIgnored(entry.name) &&
+        IMAGE_EXTENSIONS.has(path.extname(entry.name).toLowerCase())
+    )
     .map((entry) => entry.name)
     .sort(collator.compare);
 }

@@ -3,3 +3,8 @@
 
 # Local editor / tool settings — not part of the site
 .claude/
+
+# Photos kept locally but deliberately not published
+# (same convention the rebuild script uses to skip them)
+*IGNORE*
+_*
