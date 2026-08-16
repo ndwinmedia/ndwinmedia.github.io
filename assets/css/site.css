@@ -350,7 +350,7 @@ h1, h2, h3 {
 .album__grid--masonry {
   --columns: 3;
   column-count: var(--columns);
-  column-gap: 14px;
+  column-gap: 8px;
 }
 
 @media (max-width: 900px) { .album__grid--masonry { column-count: min(var(--columns), 2); } }
@@ -366,12 +366,12 @@ h1, h2, h3 {
 .album__grid--justified {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 8px;
 }
 
 .album__row {
   display: flex;
-  gap: 14px;
+  gap: 8px;
 }
 
 .album__grid--justified .photo {
@@ -393,7 +393,7 @@ h1, h2, h3 {
 .album__grid--plus {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
+  gap: 8px;
   align-items: start;
 }
 
@@ -547,13 +547,8 @@ h1, h2, h3 {
   font-size: 1.5rem;
   line-height: 1;
   cursor: pointer;
-  opacity: 0;
-  transition: opacity var(--transition), background var(--transition);
-}
-
-.carousel:hover .carousel__nav,
-.carousel:focus-within .carousel__nav {
   opacity: 1;
+  transition: background var(--transition);
 }
 
 .carousel__nav:hover { background: rgba(0, 0, 0, 0.55); }
@@ -574,7 +569,7 @@ h1, h2, h3 {
   display: block;
   width: 100%;
   padding: 0;
-  margin: 0 0 14px;
+  margin: 0 0 8px;
   border: 0;
   border-radius: var(--radius);
   overflow: hidden;

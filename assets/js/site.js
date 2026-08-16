@@ -142,7 +142,7 @@
 
   /* ------------------------------------------------- justified row layout */
 
-  var GRID_GAP = 14;
+  var GRID_GAP = 8;
   var justifiedGrids = [];
 
   function photoRatio(item) {
@@ -200,14 +200,16 @@
 
     var ratios = items.map(photoRatio);
 
-    // Below the stacking breakpoint every photo gets its own full-width row.
-    var rows;
-    if (width < 560) {
-      rows = items.map(function () { return 1; });
-    } else {
-      var target = Math.max(320, Math.min(560, width * 0.42));
-      rows = planRows(ratios, width, target);
-    }
+    // On narrow screens a lone portrait photo stretched to full width reads
+    // as an odd, oversized slab with a lot of empty air above and below it.
+    // Using a shorter target row height here lets two narrow (portrait)
+    // photos pair up edge-to-edge instead, while a single wide (landscape)
+    // photo still claims a row on its own — same row-planning approach as
+    // desktop, just tuned for a phone-sized target height.
+    var target = width < 560
+      ? Math.max(190, Math.min(340, width * 0.62))
+      : Math.max(320, Math.min(560, width * 0.42));
+    var rows = planRows(ratios, width, target);
 
     grid.textContent = "";
     var index = 0;
@@ -450,6 +452,7 @@
 
     var albums = entry.albums || [];
     var photoCount = albums.reduce(function (sum, album) {
+      if (album.layout === "carousel") return sum;
       return sum + (album.photos ? album.photos.length : 0);
     }, 0);
 

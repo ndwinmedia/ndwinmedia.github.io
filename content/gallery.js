@@ -87,9 +87,10 @@ window.SITE_GALLERY = [
         title: "My Favorite Memories",
         layout: "carousel",
         photos: [
-          "images/My Favorite Memories/IMG_04.png",
-          "images/My Favorite Memories/IMG_05.png",
-          "images/My Favorite Memories/IMG_06.png",
+          // Images to be added later
+          // "images/My Favorite Memories/IMG_04.png",
+          // "images/My Favorite Memories/IMG_05.png",
+          // "images/My Favorite Memories/IMG_06.png",
           "images/My Favorite Memories/IMG_07.png",
           "images/My Favorite Memories/IMG_1227.jpeg",
           "images/My Favorite Memories/IMG_1228.jpeg",
