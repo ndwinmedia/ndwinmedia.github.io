@@ -14,6 +14,24 @@
 
 window.SITE_GALLERY = [
   {
+    year: 2026,
+    albums: [
+      {
+        title: "S&K Engagement",
+        layout: "justified",
+        rows: [2, 3],
+        photos: [
+          "images/2026/S&K Engagement/DSC01020.jpeg",
+          "images/2026/S&K Engagement/DSC02136.jpeg",
+          "images/2026/S&K Engagement/DSC00560.jpeg",
+          "images/2026/S&K Engagement/DSC00601.jpeg",
+          "images/2026/S&K Engagement/DSC00567.jpeg"
+        ]
+      }
+    ]
+  },
+
+  {
     year: 2024,
     albums: [
       {

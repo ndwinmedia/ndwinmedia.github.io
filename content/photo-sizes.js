@@ -10,6 +10,11 @@
    ========================================================================== */
 
 window.SITE_PHOTO_SIZES = {
+  "images/2026/S&K Engagement/DSC00560.jpeg": [2000, 1250],
+  "images/2026/S&K Engagement/DSC00567.jpeg": [2000, 1125],
+  "images/2026/S&K Engagement/DSC00601.jpeg": [2000, 1124],
+  "images/2026/S&K Engagement/DSC01020.jpeg": [2000, 1333],
+  "images/2026/S&K Engagement/DSC02136.jpeg": [2000, 1333],
   "images/2024/Albany Adventures/IMG_01.png": [1920, 1280],
   "images/2024/Albany Adventures/IMG_02.png": [1920, 1281],
   "images/2023/Diploma & Drip/IMG_01.jpg": [1443, 1925],

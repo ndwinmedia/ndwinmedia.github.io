@@ -172,12 +172,18 @@
       from[end] = end - 1;
 
       for (var start = Math.max(0, end - MAX_PER_ROW); start < end; start++) {
+        var perRow = end - start;
         var sum = 0;
         for (var k = start; k < end; k++) sum += ratios[k];
 
-        var height = (width - GRID_GAP * (end - start - 1)) / sum;
+        var height = (width - GRID_GAP * (perRow - 1)) / sum;
         var deviation = Math.log(height / target);
-        var total = best[start] + deviation * deviation;
+        // A lone photo in a row fills the full width and can tower over its
+        // neighbours. Nudge the planner toward packing it into a shared row
+        // when there is still room to do so.
+        var singletonPenalty =
+          perRow === 1 && count > 1 && width >= 560 ? 0.4 : 0;
+        var total = best[start] + deviation * deviation + singletonPenalty;
 
         if (total < best[end]) {
           best[end] = total;
@@ -209,7 +215,9 @@
     var target = width < 560
       ? Math.max(190, Math.min(340, width * 0.62))
       : Math.max(320, Math.min(560, width * 0.42));
-    var rows = planRows(ratios, width, target);
+    var rows = grid.__rows && width >= 560
+      ? grid.__rows
+      : planRows(ratios, width, target);
 
     grid.textContent = "";
     var index = 0;
@@ -287,6 +295,7 @@
 
     if (layout === "justified") {
       grid.__items = items;
+      if (album.rows) grid.__rows = album.rows;
       justifiedGrids.push(grid);
     }
 
