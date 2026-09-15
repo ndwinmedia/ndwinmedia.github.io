@@ -18,6 +18,7 @@ window.SITE_GALLERY = [
     albums: [
       {
         title: "S&K Engagement",
+        description: "Their engagement, their way: simple, genuine, and completely them.",
         layout: "justified",
         rows: [2, 3],
         photos: [
